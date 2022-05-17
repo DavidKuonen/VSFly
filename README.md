@@ -1,92 +1,53 @@
-# VsFly
+<b>Introduction</b>
+
+On the basis of the EF model seen in the course, you must design an aircraft price management application for the airline VSFly.
+
+<b>Contraintes</b>
+
+For each flight available in the database, the other partner websites (ebooker / skyscanner type) can buy tickets for their customers through their websites as a front-end using webAPI requests from the BLL of their sites.
+For each flight a base price is offered by the airline. Rules exist to maximize the filling of the aircraft and the total gain on all seats. For this there are 2 variables (the filling rate of the plane and the deadline of the flight in relation to the date of purchase of the ticket). The calculation of the sale price must be done on the WebAPI server side and be returned to the partner site on each request. In the database managed by Entity Framework, the sale price of each ticket must be saved.
+
+1.	If the airplane is more than 80% full regardless of the date:<br>
+a. sale price = 150% of the base price
+2.	If the plane is filled less than 20% less than 2 months before departure:<br>
+a. sale price = 80% of the base price
+3.	If the plane is filled less than 50% less than 1 month before departure:<br>
+a. sale price = 70% of the base price
+4. In all other cases:<br>
+a. sale price = base price
+
+<b>Delivery</b>
+
+The result consists of 2 Visual Studio solutions:
+1)	Partner site<br>
+a.	With an MVC presentation layer (.net core) for<br>
+i.	List of flights<br>
+ii.	Buy tickets on available flights (no change or cancellation possible)
+
+2)	VSAFly's WebAPI<br>
+a.	With a webAPI layer<br>
+i.	A controller accepting RESTfull requests and returning the data in JSON format<br>
+1.	Requests to be processed:<br>
+a.	Return all available flights (not full)<br>
+b.	Return the sale price of a flight<br>
+c.	Buying a ticket on a flight<br>
+d.	Return the total sale price of all tickets sold for a flight<br>
+e.	Return the average sale price of all tickets sold for a destination (multiple flights possible)<br>
+f.	Return the list of all tickets sold for a destination with the first and last name of the travelers and the flight number as well as the sale price of each ticket.<br>
+b.	With an EntityFramework core layer to access the database as illustrated in the following figure.<br>
 
 
+<b>Organisation</b>
 
-## Getting started
+Group of 2 students or alone
+The 2 solutions must be in a zip file on cyberlearn and uploaded before Sunday June 12, 2022 at 11:59 p.m.
+You will present a demo of your project in the course on June 14 2024 for 10 to 15 min in front of the professor only<br>
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+<b>Evaluation</b>
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/ismael.jaggi/vsfly.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/ismael.jaggi/vsfly/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+The final grade will depend on:<br>
+1.	Your involvement in the project<br>
+2.	The present functionalities<br>
+3.	Number of bugs<br>
+4.	Quality of the code (LINQ request, correct use of EF and WebAPI)<br>
+5.	Answer to the questions asked during the demo<br>
