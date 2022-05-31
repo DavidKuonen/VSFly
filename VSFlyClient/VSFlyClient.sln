@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSFlyClient", "VSFlyClient\VSFlyClient.csproj", "{508BFF0B-D707-4ED3-BA45-32B45BDD8842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{508BFF0B-D707-4ED3-BA45-32B45BDD8842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{508BFF0B-D707-4ED3-BA45-32B45BDD8842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{508BFF0B-D707-4ED3-BA45-32B45BDD8842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{508BFF0B-D707-4ED3-BA45-32B45BDD8842}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C93F9675-1493-4278-8BFA-54874E13D960}
+	EndGlobalSection
+EndGlobal

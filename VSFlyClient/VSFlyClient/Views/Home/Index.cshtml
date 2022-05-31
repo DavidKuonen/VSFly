@@ -1,0 +1,77 @@
+﻿@model IEnumerable<VSFlyClient.Models.FlightM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableSeats)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Departure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DestinationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableSeats)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Bookings", new {   }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
