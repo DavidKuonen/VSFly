@@ -67,9 +67,8 @@
                 @Html.DisplayFor(modelItem => item.AvailableSeats)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Bookings", new {   }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Book Flight", "Index", "Booking", new { id = item.FlightId }, null); 
+                @Html.ActionLink("Bookings of Flight", "Bookings", new { id=item.FlightId   }) ;
             </td>
         </tr>
 }

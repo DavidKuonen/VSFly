@@ -26,10 +26,18 @@ namespace VSFlyClient.Controllers
       return View(listFlight);
     }
 
-    public async Task<IActionResult> Bookings()
+    public async Task<IActionResult> Bookings(int id)
     {
       var listBooking = await _vsFly.GetBookings();
-      return View(listBooking);
+      List<BookingM> bookings =  new List<BookingM>();
+      foreach(BookingM bm in listBooking)
+      {
+        if(bm.FlightId == id)
+        {
+          bookings.Add(bm);
+        }
+      }
+      return View(bookings);
     }
 
     public IActionResult Privacy()
