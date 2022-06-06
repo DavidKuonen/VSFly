@@ -89,60 +89,8 @@ namespace VSFlyAPI.Controllers
     [HttpPost]
     public async Task<ActionResult<Booking>> PostBooking(BookingM booking)
     {
-      //Calculate free seats in %
-      float percentAvailable = 0;
-      float price = 0;
-     
-      foreach (VSFlyDavidIsmael.Flight f in _context.FlightSet)
-      {
-        if (f.FlightId == booking.FlightId)
-        {
-          percentAvailable = (((float)f.AvailableSeats / (float)f.Seats) * 100);
-          price = f.BasePrice;
-          
-        }
-      }
-
-      //Multiplier based on %
-      switch (percentAvailable)
-      {
-        //80% full or more
-        case float n when (n <= 20):
-          price = price * 1.5f;
-          break;
-        //less than 20% full
-        case float n when (n >= 80):
-          price = price * 0.8f;
-          break;
-        //less than 50% full
-        case float n when (n > 50):
-          price = price * 0.7f;
-          break;
-      }
-
-      booking.Price = price;
       _context.BookingSet.Add(booking.convertToBooking());
       await _context.SaveChangesAsync();
-
-      //take available seat away
-      /*
-      foreach (VSFlyDavidIsmael.Flight f in _context.FlightSet)
-      {
-        if (f.FlightId == booking.FlightId)
-        {
-          _context.Entry(f).State = EntityState.Modified;
-          f.AvailableSeats--;
-          try
-          {
-            await _context.SaveChangesAsync();
-          }
-          catch (DbUpdateConcurrencyException)
-          {         
-              throw;
-          }
-
-        } 
-      } */
 
       return CreatedAtAction("GetBooking", new { id = booking.BookingId }, booking);
     }

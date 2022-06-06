@@ -40,7 +40,7 @@ namespace VSFlyAPI.Controllers
 
         // GET: api/Flights/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Flight>> GetFlight(int id)
+        public async Task<ActionResult<FlightM>> GetFlight(int id)
         {
             var flight = await _context.FlightSet.FindAsync(id);
 
@@ -49,7 +49,7 @@ namespace VSFlyAPI.Controllers
                 return NotFound();
             }
 
-            return flight;
+            return flight.convertToFlightM();
         }
 
         // PUT: api/Flights/5
@@ -57,39 +57,33 @@ namespace VSFlyAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFlight(int id, FlightM flight)
         {
-            if (id != flight.FlightId)
-            {
-                return BadRequest();
-            }
+      Flight realFlight = flight.convertToFlight();
 
-              Flight realFlight = flight.convertToFlight();
+      if (id != realFlight.FlightId)
+      {
+        return BadRequest();
+      }
 
-            _context.Entry(realFlight).State = EntityState.Modified;
-            
+      _context.Entry(realFlight).State = EntityState.Modified;
 
-            try
-            {
-        //*******************************************************************
-        // To solve the problem with the AvailableSeats when booking a flight
-        //*******************************************************************
-              realFlight.AvailableSeats--;
-              _context.FlightSet.Update(realFlight);
-              await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FlightExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+      try
+      {
+        await _context.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!FlightExists(id))
+        {
+          return NotFound();
         }
+        else
+        {
+          throw;
+        }
+      }
+
+      return NoContent();
+    }
 
         // POST: api/Flights
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
