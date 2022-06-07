@@ -52,9 +52,10 @@ namespace VSFlyAPI.Controllers
             return flight.convertToFlightM();
         }
 
-        // PUT: api/Flights/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+
+    // PUT: api/Flights/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
         public async Task<IActionResult> PutFlight(int id, FlightM flight)
         {
       Flight realFlight = flight.convertToFlight();

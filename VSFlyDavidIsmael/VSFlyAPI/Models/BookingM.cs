@@ -9,7 +9,7 @@ namespace VSFlyAPI.Models
   {
     public int BookingId { get; set; }
     public int FlightId { get; set; }
-    public int PassengerId { get; set; }
+    public string Passenger { get; set; }
     public float Price { get; set; }
 
   }

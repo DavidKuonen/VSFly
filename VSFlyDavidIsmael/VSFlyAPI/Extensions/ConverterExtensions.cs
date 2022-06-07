@@ -48,11 +48,11 @@ namespace VSFlyAPI.Extensions
       VSFlyDavidIsmael.VSFlyContext ctx = new VSFlyDavidIsmael.VSFlyContext();
       foreach (VSFlyDavidIsmael.Place place in ctx.PlaceSet)
       {
-        if (place.Name == fM.Destination)
+        if (place.Name.Equals(fM.Destination))
         {
           DestinationId = place.PlaceId;
         }
-        if(place.Name == fM.Departure)
+        if(place.Name.Equals(fM.Departure))
         {
           DepartureId = place.PlaceId;
         }
@@ -75,10 +75,21 @@ namespace VSFlyAPI.Extensions
 
     public static Models.BookingM convertToBookingM(this VSFlyDavidIsmael.Booking b)
     {
+      string name = "";
+
+      VSFlyDavidIsmael.VSFlyContext ctx = new VSFlyDavidIsmael.VSFlyContext();
+      foreach (VSFlyDavidIsmael.Passenger p in ctx.PassengerSet)
+      {
+        if(p.PassengerId == b.PassengerId)
+        {
+          name = p.Firstname + " " + p.Lastname;
+        }
+      }
+
       Models.BookingM bM = new Models.BookingM();
       bM.BookingId = b.BookingId;
       bM.FlightId = b.FlightId;
-      bM.PassengerId = b.PassengerId;
+      bM.Passenger = name;
       bM.Price = b.Price;
 
       return bM;
@@ -86,15 +97,51 @@ namespace VSFlyAPI.Extensions
 
     public static VSFlyDavidIsmael.Booking convertToBooking(this Models.BookingM bM)
     {
+      int bmId = 0;
+      VSFlyDavidIsmael.VSFlyContext ctx = new VSFlyDavidIsmael.VSFlyContext();
+      foreach(VSFlyDavidIsmael.Passenger p in ctx.PassengerSet)
+      {
+        if((p.Firstname+" "+p.Lastname).Equals(bM.Passenger))
+        {
+          bmId = p.PassengerId;
+        }
+      }
+
       VSFlyDavidIsmael.Booking b = new VSFlyDavidIsmael.Booking();
       b.BookingId = bM.BookingId;
       b.FlightId = bM.FlightId;
-      b.PassengerId = bM.PassengerId;
+      b.PassengerId = bmId;
       b.Price = bM.Price;
 
       return b;
     }
 
+    public static VSFlyDavidIsmael.Passenger convertToPassenger(this Models.PassengerM pM)
+    {
+      VSFlyDavidIsmael.VSFlyContext ctx = new VSFlyDavidIsmael.VSFlyContext();
+      foreach(VSFlyDavidIsmael.Passenger p in ctx.PassengerSet)
+      {
+        if (p.Firstname.Equals(pM.Firstname) && p.Lastname.Equals(pM.Lastname))
+        {
+          return p;
+        }
+      }
+
+      VSFlyDavidIsmael.Passenger pp = new VSFlyDavidIsmael.Passenger { PassengerId = 0, Firstname = pM.Firstname, Lastname = pM.Lastname };
+      return pp;
+    }
+
+    public static Models.PassengerM convertToPassengerM(this VSFlyDavidIsmael.Passenger p)
+    {
+      VSFlyDavidIsmael.VSFlyContext ctx = new VSFlyDavidIsmael.VSFlyContext();
+
+      Models.PassengerM pM = new Models.PassengerM();
+
+      pM.Firstname = p.Firstname;
+      pM.Lastname = p.Lastname;
+
+      return pM;
+    }
 
   }
 }
