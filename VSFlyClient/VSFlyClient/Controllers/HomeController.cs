@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,15 @@ namespace VSFlyClient.Controllers
         }
       }
       return View(bookings);
+    }
+
+    public async Task<IActionResult> TotalTicketPrice(int id)
+    {
+      var flight = await _vsFly.GetFlight(id);
+      var totalTicketPrice = await _vsFly.GetFlightTotalTicketPrice(id);
+      flight.BasePrice = totalTicketPrice;
+
+      return View(flight);
     }
 
     public IActionResult Privacy()

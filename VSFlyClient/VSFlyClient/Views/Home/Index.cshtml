@@ -1,16 +1,18 @@
 ﻿@model IEnumerable<VSFlyClient.Models.FlightM>
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Available Flights</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
+
     <thead>
+
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FlightId)
@@ -40,37 +42,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Departure)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DestinationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BasePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableSeats)
-            </td>
-            <td>
-                @Html.ActionLink("Book Flight", "Index", "Booking", new { id = item.FlightId }, null); 
-                @Html.ActionLink("Bookings of Flight", "Bookings", new { id=item.FlightId   }) ;
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartureTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BasePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seats)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableSeats)
+                </td>
+                <td>
+                    @Html.ActionLink("Book Flight", "Index", "Booking", new { id = item.FlightId }, null);
+                    @Html.ActionLink("Bookings of Flight", "Bookings", new { id = item.FlightId }) ;
+                    @Html.ActionLink("Total Ticket Price", "TotalTicketPrice", new { id = item.FlightId }) ;
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<h2>Want to check Destination Prices?</h2>
+@Html.ActionLink("Average Destination Prices", "Index", "Destination", new { })

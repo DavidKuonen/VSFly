@@ -56,16 +56,16 @@ namespace VSFlyClient.Services
     }
 
     public async Task<FlightM> UpdateFlight(FlightM flight)
-    {       
+    {
       HttpResponseMessage response = await _client.PutAsJsonAsync(
-               _baseuri + "Flights/"+flight.FlightId, flight);
+               _baseuri + "Flights/" + flight.FlightId, flight);
       response.EnsureSuccessStatusCode();
 
       // Deserialize the updated product from the response body.
       //ReadAsAsync requires Microsoft.AspNet.WebApi.Client from nugget manager
       flight = await response.Content.ReadAsAsync<FlightM>();
       return flight;
-      
+
     }
 
     public async Task<IEnumerable<BookingM>> GetBookings()
@@ -89,6 +89,60 @@ namespace VSFlyClient.Services
       response.EnsureSuccessStatusCode();
 
       return booking;
+
+    }
+
+    public async Task<float> GetDestinationAverageTicketPrice(string Destination)
+    {
+
+      var uri = _baseuri + "AverageTicketPrice?destination=" + Destination;
+
+      var responseString = await _client.GetStringAsync(uri);
+      var average = JsonConvert.DeserializeObject<float>(responseString);
+
+      return average;
+
+    }
+
+    public async Task<float> GetFlightTicketPrice(int id)
+    {
+      var uri = _baseuri + "Ticket/" + id;
+
+      var responseString = await _client.GetStringAsync(uri);
+      var ticketPrice = JsonConvert.DeserializeObject<float>(responseString);
+
+      return ticketPrice;
+    }
+
+    public async Task<float> GetFlightTotalTicketPrice(int id)
+    {
+      var uri = _baseuri + "TotalTicketPrice/" + id;
+
+      var responseString = await _client.GetStringAsync(uri);
+      var totalTicketPrice = JsonConvert.DeserializeObject<float>(responseString);
+
+      return totalTicketPrice;
+    }
+
+    public async Task<IEnumerable<PassengerM>> GetPassengers()
+    {
+      var uri = _baseuri + "Passengers";
+
+      var responseString = await _client.GetStringAsync(uri);
+      var passengers = JsonConvert.DeserializeObject<IEnumerable<PassengerM>>(responseString);
+
+      return passengers;
+    }
+
+    public async Task<PassengerM> PostPassenger(PassengerM passenger)
+    {
+      var uri = _baseuri + "Passengers";
+
+      HttpResponseMessage response = await _client.PostAsJsonAsync(
+                uri, passenger);
+      response.EnsureSuccessStatusCode();
+
+      return passenger;
 
     }
 

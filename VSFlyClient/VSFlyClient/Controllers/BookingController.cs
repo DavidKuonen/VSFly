@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,33 +20,8 @@ namespace VSFlyClient.Controllers
       _logger = logger;
       _vsFly = vsFly;
     }
-    public float PriceCalc(FlightM flight)
-    {
-      //Calculate free seats in %
-      float percentAvailable = 0;
-      float price = flight.BasePrice;
-      percentAvailable = (((float)flight.AvailableSeats / (float)flight.Seats) * 100);
-
-      //Multiplier based on %
-      switch (percentAvailable)
-      {
-        //80% full or more
-        case float n when (n <= 20):
-          price = price * 1.5f;
-          break;
-        //less than 20% full
-        case float n when (n >= 80):
-          price = price * 0.8f;
-          break;
-        //less than 50% full
-        case float n when (n > 50):
-          price = price * 0.7f;
-          break;
-      }
-
-      return price;
-    }
-    //Stupid way to get highest ID, hopefully better solution can be found
+   
+    //get highest ID
     public async Task<int> getBookingId()
     {
       var bookings = await _vsFly.GetBookings();
@@ -62,15 +38,15 @@ namespace VSFlyClient.Controllers
 
     public async Task<IActionResult> Index(int id)
     {
-      var flight = await _vsFly.GetFlight(id);
-      //Stupid way to get highest ID, hopefully better solution can be found
+      //highest ID to show client 
       int bookingId = await getBookingId();
 
-     float price = PriceCalc(flight);
+      //get ticket price from API
+      float price = await _vsFly.GetFlightTicketPrice(id);
 
 
       var booking = new BookingM 
-      {FlightId = id,PassengerId = 1,Price = price,BookingId = bookingId+1 };
+      {FlightId = id,Passenger = HttpContext.Session.GetString("_Firstname") + " "+ HttpContext.Session.GetString("_Lastname"), Price = price,BookingId = bookingId+1 };
 
       return View(booking);
     }
@@ -78,12 +54,40 @@ namespace VSFlyClient.Controllers
     public async Task<IActionResult> ConfirmBooking(int id)
     {
       var flight = await _vsFly.GetFlight(id);
-      float price = PriceCalc(flight);
+      float price = await _vsFly.GetFlightTicketPrice(id); 
       //Stupid way to get highest ID, hopefully better solution can be found
       int bookingId = await getBookingId();
+      BookingM booking = new BookingM();
 
-      var booking = new BookingM
-      { FlightId = id, PassengerId = 1, Price = price, BookingId = 0 };
+      //Check if passenger exists in API database
+      var passengers = await _vsFly.GetPassengers();
+      PassengerM realPassenger = null;
+      foreach(PassengerM p in passengers)
+      {
+        if(HttpContext.Session.GetString("_Firstname").Equals(p.Firstname) &&
+        HttpContext.Session.GetString("_Lastname").Equals(p.Lastname))
+        {
+          realPassenger = p;
+          booking = new BookingM
+          { FlightId = id, Passenger = realPassenger.Firstname + " " + realPassenger.Lastname, Price = price, BookingId = 0 };
+          break;
+        }
+      }
+      //otherwise create him 
+      if(realPassenger == null)
+      {
+        PassengerM newPassenger = new PassengerM();
+
+        var firstname = HttpContext.Session.GetString("_Firstname");
+        var lastname = HttpContext.Session.GetString("_Lastname");
+        newPassenger.Firstname = firstname;
+        newPassenger.Lastname = lastname;
+
+        newPassenger = await _vsFly.PostPassenger(newPassenger);
+
+        booking = new BookingM
+        { FlightId = id, Passenger = newPassenger.Firstname + " " + newPassenger.Lastname, Price = price, BookingId = 0 };
+      }
 
       var bookingnew = await _vsFly.PostBooking(booking);
 

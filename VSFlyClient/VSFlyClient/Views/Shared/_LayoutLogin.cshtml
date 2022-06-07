@@ -1,6 +1,4 @@
 ﻿<!DOCTYPE html>
-@using Microsoft.AspNetCore.Http;
-@inject IHttpContextAccessor HttpContextAccessor
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,7 +10,6 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <p style="float: right; margin-top: 5px;">You are logged in as:&nbsp;<b>@HttpContextAccessor.HttpContext.Session.GetString("_Firstname") @HttpContextAccessor.HttpContext.Session.GetString("_Lastname")</b></p>
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">VSFlyClient</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"

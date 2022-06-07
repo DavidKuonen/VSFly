@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.FlightId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PassengerId)
+                @Html.DisplayNameFor(model => model.Passenger)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -37,15 +37,10 @@
                 @Html.DisplayFor(modelItem => item.FlightId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PassengerId)
+                @Html.DisplayFor(modelItem => item.Passenger)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }
