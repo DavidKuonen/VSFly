@@ -83,6 +83,7 @@ namespace VSFlyAPI.Extensions
         if(p.PassengerId == b.PassengerId)
         {
           name = p.Firstname + " " + p.Lastname;
+         // name = $"{p.Firstname} {p.Lastname}";
         }
       }
 

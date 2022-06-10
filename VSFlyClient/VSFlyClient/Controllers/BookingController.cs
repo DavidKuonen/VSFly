@@ -45,6 +45,8 @@ namespace VSFlyClient.Controllers
       float price = await _vsFly.GetFlightTicketPrice(id);
 
 
+      //Create booking to show client before he confirms
+      //uses first and lastname from session
       var booking = new BookingM 
       {FlightId = id,Passenger = HttpContext.Session.GetString("_Firstname") + " "+ HttpContext.Session.GetString("_Lastname"), Price = price,BookingId = bookingId+1 };
 
@@ -55,7 +57,7 @@ namespace VSFlyClient.Controllers
     {
       var flight = await _vsFly.GetFlight(id);
       float price = await _vsFly.GetFlightTicketPrice(id); 
-      //Stupid way to get highest ID, hopefully better solution can be found
+      //get highest ID
       int bookingId = await getBookingId();
       BookingM booking = new BookingM();
 
