@@ -12,8 +12,10 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <p style="float: right; margin-top: 5px;">You are logged in as:&nbsp;<b>@HttpContextAccessor.HttpContext.Session.GetString("_Firstname") @HttpContextAccessor.HttpContext.Session.GetString("_Lastname")</b></p>
-            <p style="float: right; margin-top: 5px;">@Html.ActionLink("My Bookings", "MyBookings", "Booking", new { id = 2 }) ;</p>
+            <div class="container">
+                <p style="float: right; margin-top: 5px;">You are logged in as:&nbsp;<b>@HttpContextAccessor.HttpContext.Session.GetString("_Firstname") @HttpContextAccessor.HttpContext.Session.GetString("_Lastname")</b></p>
+                <a class="button-4" href="@Url.Action("MyBookings", "Booking", new { id = 2 })">My Bookings</a>
+            </div>
         </nav>
     </header>
     <div class="container">

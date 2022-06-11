@@ -4,7 +4,7 @@
     ViewData["Title"] = "TotalTicketPrice";
 }
 
-<h1>TotalTicketPrice</h1>
+<h1>Total TicketPrice</h1>
 
 <div>
     <h4>FlightM</h4>
@@ -61,6 +61,5 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Home", "Index", new {  }) 
-
+    <a class="button-4" href="@Url.Action("Index", "Home", new {})">Back to Flight List</a>
 </div>

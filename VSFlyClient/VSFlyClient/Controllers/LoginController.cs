@@ -46,7 +46,8 @@ namespace VSFlyClient.Controllers
       }
       //otherwise create him 
       if (realPassenger == null)
-      {      
+      {
+        realPassenger = new PassengerM();
         realPassenger.Firstname = login.Firstname;
         realPassenger.Lastname = login.Lastname;
 

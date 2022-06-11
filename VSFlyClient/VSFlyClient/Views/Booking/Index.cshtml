@@ -37,6 +37,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Confirm Booking", "ConfirmBooking", "Booking", new { id = Model.FlightId }, null) |
-    @Html.ActionLink("Home", "Index", "Home")
+    <a class="button-4" href="@Url.Action("ConfirmBooking", "Booking", new { id = Model.FlightId }, null)">Confirm Booking</a>
+    <a class="button-4" href="@Url.Action("Index", "Home", new {})">Back to Flight List</a>
 </div>

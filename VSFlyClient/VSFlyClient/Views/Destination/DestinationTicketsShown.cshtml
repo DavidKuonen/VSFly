@@ -4,7 +4,7 @@
     ViewData["Title"] = "DestinationTicketsShown";
 }
 
-<h1>Tcikets for Destination</h1>
+<h1>Tickets for Destination</h1>
 
 <table class="table">
     <thead>
@@ -45,5 +45,5 @@
 </table>
 
 <div>
-    @Html.ActionLink("Back", "DestinationTickets", new { })
+    <a class="button-4" href="@Url.Action("DestinationTickets", "Destination", new {})">Back</a>
 </div>
