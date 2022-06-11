@@ -6,7 +6,6 @@ namespace VSFlyDavidIsmael
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
       var ctx = new VSFlyContext();
 
       var e = ctx.Database.EnsureCreated();
