@@ -6,10 +6,11 @@ namespace VSFlyClient.Services
 {
   public interface IVSFlyServices
   {
+    Task<IEnumerable<FlightM>> GetAvailableFlights();
     Task<IEnumerable<BookingM>> GetBookings();
+    Task<IEnumerable<BookingM>> GetBookingsByDestination(string destination);
     Task<float> GetDestinationAverageTicketPrice(string Destination);
     Task<FlightM> GetFlight(int id);
-    Task<IEnumerable<FlightM>> GetFlights();
     Task<float> GetFlightTicketPrice(int id);
     Task<float> GetFlightTotalTicketPrice(int id);
     Task<IEnumerable<PassengerM>> GetPassengers();

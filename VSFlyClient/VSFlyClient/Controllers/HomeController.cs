@@ -23,7 +23,7 @@ namespace VSFlyClient.Controllers
 
     public async Task<IActionResult> Index()
     {
-      var listFlight = await _vsFly.GetFlights();
+      var listFlight = await _vsFly.GetAvailableFlights();
       return View(listFlight);
     }
 

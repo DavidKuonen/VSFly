@@ -41,7 +41,7 @@ namespace VSFlyAPI.Controllers
 
     // GET: api/Bookings/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Booking>> GetBooking(int id)
+    public async Task<ActionResult<BookingM>> GetBooking(int id)
     {
       var booking = await _context.BookingSet.FindAsync(id);
 
@@ -50,7 +50,44 @@ namespace VSFlyAPI.Controllers
         return NotFound();
       }
 
-      return booking;
+      var bookingM = booking.convertToBookingM();
+      return bookingM;
+    }
+
+    [HttpGet("/api/Bookings/Destination/{destination}")]
+    public async Task<IEnumerable<BookingM>> GetBookingsByDestination(string destination)
+    {
+      var booking = await _context.BookingSet.ToListAsync();
+      List<Flight> flights = await _context.FlightSet.ToListAsync();
+
+      List<BookingM> bookingDestination = new List<BookingM>();
+      List<FlightM> flightsDestination = new List<FlightM>();
+      
+      //Get flights of destination
+      foreach (Flight f in flights)
+      {
+        var fM = f.convertToFlightM();
+        if (fM.Destination == destination)
+        {
+          flightsDestination.Add(fM);
+        }
+      }
+
+      //Check if a booking is for a flight of the destination
+      foreach (Booking b in booking)
+      {
+        foreach(FlightM f in flightsDestination)
+        {
+          if(b.FlightId == f.FlightId)
+          {
+            var bM = b.convertToBookingM();
+            bookingDestination.Add(bM);
+          }
+        }
+      }
+
+
+      return bookingDestination;
     }
 
     // PUT: api/Bookings/5

@@ -34,5 +34,26 @@ namespace VSFlyClient.Controllers
 
       return View(DestinationM);
     }
+
+    public IActionResult DestinationTickets()
+    {
+      return View();
+    }
+
+    [HttpPost]
+    public IActionResult DestinationTickets(DestinationInfoM DestinationM)
+    {
+      return RedirectToAction("DestinationTicketsShown","Destination", new { DestinationM.Destination });
+    }
+
+    public async Task<IActionResult> DestinationTicketsShown(string destination)
+    {
+      var bookings = await _vsFly.GetBookingsByDestination(destination);
+
+      return View(bookings);
+    }
+
+
+
   }
 }

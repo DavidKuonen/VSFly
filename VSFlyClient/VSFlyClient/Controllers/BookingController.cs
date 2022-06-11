@@ -59,42 +59,16 @@ namespace VSFlyClient.Controllers
       float price = await _vsFly.GetFlightTicketPrice(id); 
       //get highest ID
       int bookingId = await getBookingId();
-      BookingM booking = new BookingM();
 
-      //Check if passenger exists in API database
-      var passengers = await _vsFly.GetPassengers();
-      PassengerM realPassenger = null;
-      foreach(PassengerM p in passengers)
-      {
-        if(HttpContext.Session.GetString("_Firstname").Equals(p.Firstname) &&
-        HttpContext.Session.GetString("_Lastname").Equals(p.Lastname))
-        {
-          realPassenger = p;
-          booking = new BookingM
-          { FlightId = id, Passenger = realPassenger.Firstname + " " + realPassenger.Lastname, Price = price, BookingId = 0 };
-          break;
-        }
-      }
-      //otherwise create him 
-      if(realPassenger == null)
-      {
-        PassengerM newPassenger = new PassengerM();
-
-        var firstname = HttpContext.Session.GetString("_Firstname");
-        var lastname = HttpContext.Session.GetString("_Lastname");
-        newPassenger.Firstname = firstname;
-        newPassenger.Lastname = lastname;
-
-        newPassenger = await _vsFly.PostPassenger(newPassenger);
-
-        booking = new BookingM
-        { FlightId = id, Passenger = newPassenger.Firstname + " " + newPassenger.Lastname, Price = price, BookingId = 0 };
-      }
-
+      //Create Booking for User of the Session
+      BookingM booking = new BookingM
+      { FlightId = id, Passenger = HttpContext.Session.GetString("_Firstname") + " " + HttpContext.Session.GetString("_Lastname"), Price = price, BookingId = 0 };
+      
       var bookingnew = await _vsFly.PostBooking(booking);
 
       bookingnew.BookingId = bookingId+1;
 
+      //take 1 available seat away 
       flight.AvailableSeats--;
       await _vsFly.UpdateFlight(flight);
 

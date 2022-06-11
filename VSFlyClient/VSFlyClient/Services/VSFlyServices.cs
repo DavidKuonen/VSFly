@@ -24,23 +24,12 @@ namespace VSFlyClient.Services
       _client.BaseAddress = new Uri("https://localhost:44372/api/");
     }
 
-    public async Task<IEnumerable<FlightM>> GetFlights()
+    public async Task<IEnumerable<FlightM>> GetAvailableFlights()
     {
-      var uri = _baseuri + "Flights";
+      var uri = _baseuri + "Flights/Available";
 
       var responseString = await _client.GetStringAsync(uri);
-      var flightList = JsonConvert.DeserializeObject<IEnumerable<FlightM>>(responseString);
-
-      //only bookable flights will be returned
-      List<FlightM> bookableFlights = new List<FlightM>();
-
-      foreach (FlightM f in flightList)
-      {
-        if (f.AvailableSeats > 0)
-        {
-          bookableFlights.Add(f);
-        }
-      }
+      var bookableFlights = JsonConvert.DeserializeObject<IEnumerable<FlightM>>(responseString);
 
       return bookableFlights;
     }
@@ -90,6 +79,16 @@ namespace VSFlyClient.Services
 
       return booking;
 
+    }
+
+    public async Task<IEnumerable<BookingM>> GetBookingsByDestination(string destination)
+    {
+      var uri = _baseuri + "Bookings/Destination/" + destination;
+      var responseString = await _client.GetStringAsync(uri);
+
+      var bookingsfordestination = JsonConvert.DeserializeObject<IEnumerable<BookingM>>(responseString);
+
+      return bookingsfordestination;
     }
 
     public async Task<float> GetDestinationAverageTicketPrice(string Destination)

@@ -38,8 +38,27 @@ namespace VSFlyAPI.Controllers
       return flightMs;
     }
 
-        // GET: api/Flights/5
-        [HttpGet("{id}")]
+    // GET: api/Flights/Available
+    [HttpGet("/api/Flights/Available")]
+    public async Task<ActionResult<IEnumerable<FlightM>>> GetFlightAvailableSet()
+    {
+      var flightList = await _context.FlightSet.ToListAsync();
+      List<FlightM> flightMs = new List<FlightM>();
+
+      foreach (Flight f in flightList)
+      {
+        if(f.AvailableSeats > 0 && f.DepartureTime > DateTime.Now)
+        { 
+        var fM = f.convertToFlightM();
+        flightMs.Add(fM);
+        }
+      }
+
+      return flightMs;
+    }
+
+    // GET: api/Flights/5
+    [HttpGet("{id}")]
         public async Task<ActionResult<FlightM>> GetFlight(int id)
         {
             var flight = await _context.FlightSet.FindAsync(id);
