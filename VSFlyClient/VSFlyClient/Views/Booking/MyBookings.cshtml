@@ -1,0 +1,50 @@
+﻿@model IEnumerable<VSFlyClient.Models.BookingM>
+
+@{
+    ViewData["Title"] = "MyBookings";
+}
+
+<h1>MyBookings</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passenger)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Passenger)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price) CHF
+                </td>
+                <td>
+                    @Html.ActionLink("Cancel Booking", "Cancel", new { id = item.BookingId })
+                </td>
+            </tr>
+        }
+        @Html.ActionLink("Home", "Index", "Home")
+    </tbody>
+</table>

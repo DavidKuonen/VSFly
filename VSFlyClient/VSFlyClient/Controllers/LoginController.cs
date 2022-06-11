@@ -46,17 +46,15 @@ namespace VSFlyClient.Controllers
       }
       //otherwise create him 
       if (realPassenger == null)
-      {
-        PassengerM newPassenger = new PassengerM();
+      {      
+        realPassenger.Firstname = login.Firstname;
+        realPassenger.Lastname = login.Lastname;
 
-        var firstname = login.Firstname;
-        var lastname = login.Lastname;
-        newPassenger.Firstname = firstname;
-        newPassenger.Lastname = lastname;
-
-        newPassenger = await _vsFly.PostPassenger(newPassenger);
+        realPassenger = await _vsFly.PostPassenger(realPassenger);
 
       }
+      HttpContext.Session.SetInt32("_UserId", realPassenger.PassengerId);
+
       return RedirectToAction("Index","Home");
     }
   }

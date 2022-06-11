@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,22 @@ namespace VSFlyClient.Controllers
 
     public IActionResult Index()
     {
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
       return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Index(DestinationInfoM DestinationM)
     {
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
       float price = await _vsFly.GetDestinationAverageTicketPrice(DestinationM.Destination);
       DestinationM.AveragePrice = price;
 
@@ -48,12 +59,14 @@ namespace VSFlyClient.Controllers
 
     public async Task<IActionResult> DestinationTicketsShown(string destination)
     {
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
       var bookings = await _vsFly.GetBookingsByDestination(destination);
 
       return View(bookings);
     }
-
-
-
   }
 }

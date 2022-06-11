@@ -138,6 +138,7 @@ namespace VSFlyAPI.Extensions
 
       Models.PassengerM pM = new Models.PassengerM();
 
+      pM.PassengerId = p.PassengerId;
       pM.Firstname = p.Firstname;
       pM.Lastname = p.Lastname;
 

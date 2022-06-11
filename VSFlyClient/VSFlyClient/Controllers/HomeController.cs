@@ -23,12 +23,22 @@ namespace VSFlyClient.Controllers
 
     public async Task<IActionResult> Index()
     {
-      var listFlight = await _vsFly.GetAvailableFlights();
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
+            var listFlight = await _vsFly.GetAvailableFlights();
       return View(listFlight);
     }
 
     public async Task<IActionResult> Bookings(int id)
     {
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
       var listBooking = await _vsFly.GetBookings();
       List<BookingM> bookings =  new List<BookingM>();
       foreach(BookingM bm in listBooking)
@@ -43,16 +53,16 @@ namespace VSFlyClient.Controllers
 
     public async Task<IActionResult> TotalTicketPrice(int id)
     {
+      if (HttpContext.Session.GetInt32("_UserId") == null)
+      {
+        return RedirectToAction("Login", "Login");
+      }
+
       var flight = await _vsFly.GetFlight(id);
       var totalTicketPrice = await _vsFly.GetFlightTotalTicketPrice(id);
       flight.BasePrice = totalTicketPrice;
 
       return View(flight);
-    }
-
-    public IActionResult Privacy()
-    {
-      return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
