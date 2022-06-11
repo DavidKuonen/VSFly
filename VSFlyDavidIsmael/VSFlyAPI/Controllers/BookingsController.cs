@@ -90,9 +90,29 @@ namespace VSFlyAPI.Controllers
       return bookingDestination;
     }
 
-    // PUT: api/Bookings/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    // GET: api/Flights/Passenger/5
+    [HttpGet("Passenger/{id}")]
+    public async Task<ActionResult<IEnumerable<BookingM>>> GetUserBookings(int id)
+    {
+        var bookingList = await _context.BookingSet.ToListAsync();
+
+        List<BookingM> bookingMs = new List<BookingM>();
+
+        foreach (Booking b in bookingList)
+        {
+            if (b.PassengerId == id)
+            {
+                var bM = b.convertToBookingM();
+                bookingMs.Add(bM);
+            }
+        }
+
+        return bookingMs;
+    }
+
+        // PUT: api/Bookings/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
     public async Task<IActionResult> PutBooking(int id, Booking booking)
     {
       if (id != booking.BookingId)
@@ -153,6 +173,8 @@ namespace VSFlyAPI.Controllers
       {
         return NotFound();
       }
+      var flight = await _context.FlightSet.FindAsync(booking.FlightId);
+      flight.AvailableSeats++;
 
       _context.BookingSet.Remove(booking);
       await _context.SaveChangesAsync();
