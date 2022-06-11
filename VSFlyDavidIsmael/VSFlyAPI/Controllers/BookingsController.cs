@@ -129,6 +129,18 @@ namespace VSFlyAPI.Controllers
       _context.BookingSet.Add(booking.convertToBooking());
       await _context.SaveChangesAsync();
 
+      //Take an available seat away
+      List<Flight> flights = await _context.FlightSet.ToListAsync();
+
+      foreach(Flight f in flights)
+      {
+        if(f.FlightId == booking.FlightId)
+        {
+          f.AvailableSeats--;
+          await _context.SaveChangesAsync();
+        }
+      }
+
       return CreatedAtAction("GetBooking", new { id = booking.BookingId }, booking);
     }
 

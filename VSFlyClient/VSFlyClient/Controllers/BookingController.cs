@@ -68,11 +68,6 @@ namespace VSFlyClient.Controllers
 
       bookingnew.BookingId = bookingId+1;
 
-      //take 1 available seat away 
-      flight.AvailableSeats--;
-      await _vsFly.UpdateFlight(flight);
-
-
       return View(bookingnew);
 
     }
