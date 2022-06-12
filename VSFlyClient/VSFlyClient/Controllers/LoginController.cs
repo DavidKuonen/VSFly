@@ -41,6 +41,7 @@ namespace VSFlyClient.Controllers
        login.Lastname.Equals(p.Lastname))
         {
           realPassenger = p;
+          HttpContext.Session.SetInt32("_UserId", realPassenger.PassengerId);
           break;
         }
       }
@@ -52,11 +53,19 @@ namespace VSFlyClient.Controllers
         realPassenger.Lastname = login.Lastname;
 
         realPassenger = await _vsFly.PostPassenger(realPassenger);
-
-      }
-      HttpContext.Session.SetInt32("_UserId", realPassenger.PassengerId);
-
+        passengers = await _vsFly.GetPassengers();
+        foreach (PassengerM p in passengers)
+        {
+            if (login.Firstname.Equals(p.Firstname) &&
+            login.Lastname.Equals(p.Lastname))
+            {
+                realPassenger = p;
+                HttpContext.Session.SetInt32("_UserId", realPassenger.PassengerId);
+                break;
+            }
+        }
+      }      
       return RedirectToAction("Index","Home");
     }
   }
-  }
+}

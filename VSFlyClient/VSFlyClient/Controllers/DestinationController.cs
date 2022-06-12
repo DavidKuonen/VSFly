@@ -40,6 +40,7 @@ namespace VSFlyClient.Controllers
       }
 
       float price = await _vsFly.GetDestinationAverageTicketPrice(DestinationM.Destination);
+      price = (float)(Math.Round(price * 20) / 20);
       DestinationM.AveragePrice = price;
 
 

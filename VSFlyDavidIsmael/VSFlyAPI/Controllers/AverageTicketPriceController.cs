@@ -61,7 +61,7 @@ namespace VSFlyAPI.Controllers
         return 0;
       }
 
-      //math
+      //Get the right price
       foreach(Booking b in booking)
       {
         totalPrice += b.Price;
